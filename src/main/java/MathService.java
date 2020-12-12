@@ -17,6 +17,11 @@ public class MathService {
         return get(uri);
     }
 
+    public String frankfurter() throws CustomException {
+        String uri = "https://api.frankfurter.app/latest?to=USD&from=PLN";
+        return get(uri);
+    }
+
     private String get(String uri) throws CustomException {
         try {
             URL url = new URL(uri);

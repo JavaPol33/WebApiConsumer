@@ -4,16 +4,19 @@ import java.util.List;
 
 public class GsonExample {
 
-    public String parse() {
+    public String parse() throws CustomException {
 
-        String json = "{\n" +
-                "    \"amount\": 1.0,\n" +
-                "    \"base\": \"PLN\",\n" +
-                "    \"date\": \"2020-12-11\",\n" +
-                "    \"rates\": {\n" +
-                "        \"USD\": 0.27339\n" +
-                "    }\n" +
-                "}";
+//        String json = "{\n" +
+//                "    \"amount\": 1.0,\n" +
+//                "    \"base\": \"PLN\",\n" +
+//                "    \"date\": \"2020-12-11\",\n" +
+//                "    \"rates\": {\n" +
+//                "        \"USD\": 0.27339\n" +
+//                "    }\n" +
+//                "}";
+
+        MathService mathService = new MathService();
+        String json = mathService.frankfurter();
 
         Gson gson = new Gson();
 
