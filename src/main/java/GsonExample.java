@@ -6,17 +6,18 @@ public class GsonExample {
 
     public String parse() throws CustomException {
 
-//        String json = "{\n" +
-//                "    \"amount\": 1.0,\n" +
-//                "    \"base\": \"PLN\",\n" +
-//                "    \"date\": \"2020-12-11\",\n" +
-//                "    \"rates\": {\n" +
-//                "        \"USD\": 0.27339\n" +
-//                "    }\n" +
-//                "}";
+        String json = "{\n" +
+                "    \"amount\": 1.0,\n" +
+                "    \"base\": \"PLN\",\n" +
+                "    \"date\": \"2020-12-11\",\n" +
+                "    \"rates\": {\n" +
+                "        \"USD\": 0.27339\n" +
+                "    },\n" +
+                "    \"age_min\": null" +
+                "}";
 
-        MathService mathService = new MathService();
-        String json = mathService.frankfurter();
+//        MathService mathService = new MathService();
+//        String json = mathService.frankfurter();
 
         Gson gson = new Gson();
 
@@ -32,6 +33,15 @@ public class GsonExample {
         private double amount;
         private String base;
         // private List<String> rates;
+        private Integer age_min;
+
+        public Integer getAge_min() {
+            return age_min;
+        }
+
+        public void setAge_min(Integer age_min) {
+            this.age_min = age_min;
+        }
 
         public String getBrand() {
             return brand;
