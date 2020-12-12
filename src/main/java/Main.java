@@ -17,6 +17,7 @@ public class Main {
             System.out.println("Wybierz opcję");
             System.out.println("1) wylosuj ciekawostkę");
             System.out.println("2) poznaj informację o liczbie");
+            System.out.println("3) Prasowanie JSON - przykład");
 
             Scanner scanner = new Scanner(System.in);
             int option = scanner.nextInt();
@@ -30,6 +31,10 @@ public class Main {
                     System.out.println("Podaj liczbę");
                     int number = scanner.nextInt();
                     result = mathService.math(number);
+                    break;
+                case 3:
+                    GsonExample gsonExample = new GsonExample();
+                    result = gsonExample.parse();
                     break;
                 default:
                     result = "Nie rozpoznano wyboru";
