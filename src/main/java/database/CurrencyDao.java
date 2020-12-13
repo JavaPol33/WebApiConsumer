@@ -66,7 +66,25 @@ public class CurrencyDao {
 
     }
 
-    public void delete(Currency currency) {
+    public void delete(long id) {
 
+        Currency currency = getById(id);
+        if (currency != null) {
+
+            Transaction transaction = null;
+            try {
+                Session session = HibernateConfig.getSessionFactory().openSession();
+                transaction = session.beginTransaction();
+                session.delete(currency);
+                transaction.commit();
+            } catch (IllegalStateException | RollbackException e) {
+                System.err.println("Błąd usuwania Currency");
+                e.printStackTrace();
+
+                if (transaction != null) {
+                    transaction.rollback();
+                }
+            }
+        }
     }
 }
