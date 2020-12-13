@@ -5,6 +5,8 @@ import service.CurrencyService;
 import service.MathService;
 import service.ProductService;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Scanner;
 
 public class Main {
@@ -39,7 +41,7 @@ public class Main {
                 System.out.println("Podaj datę (kliknij enter by wybrać bieżącą datę)");
                 String date = scannerString.nextLine();
                 if (date.equals("")) {
-                    date = "latest";
+                    date = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
                 }
 
                 String from = "";

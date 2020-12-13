@@ -1,5 +1,6 @@
 package mapper;
 
+import com.google.gson.internal.LinkedTreeMap;
 import database.Currency;
 import dto.CurrencyDto;
 
@@ -21,6 +22,21 @@ public class CurrencyMapper {
 
             result.add(currency);
         }
+
+        return result;
+    }
+
+    public static CurrencyDto mapCurrencyToCurrencyDto(Currency currency) {
+
+        CurrencyDto result = new CurrencyDto();
+        result.setAmount(currency.getAmount());
+        result.setBase(currency.getBase());
+        result.setDate(currency.getDate());
+
+        LinkedTreeMap<String, Double> rates = new LinkedTreeMap();
+        rates.put(currency.getRateName(), currency.getRateValue());
+
+        result.setRates(rates);
 
         return result;
     }

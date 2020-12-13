@@ -2,20 +2,21 @@ package service;
 
 import com.google.gson.Gson;
 import database.Currency;
+import database.CurrencyDao;
 import dto.CurrencyDto;
 import http.HttpClient;
 import mapper.CurrencyMapper;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 public class CurrencyService {
 
     private final HttpClient httpClient;
+    private final CurrencyDao currencyDao;
 
     public CurrencyService(HttpClient httpClient) {
         this.httpClient = httpClient;
+        currencyDao = new CurrencyDao();
     }
 
 //    public CurrencyDto frankfurter() {
@@ -32,16 +33,23 @@ public class CurrencyService {
 
     public CurrencyDto frankfurter(String date, String from, String to) {
 
-        // TODO: search in database
+        CurrencyDto currencyDto;
+        Currency currency = currencyDao.getByDateAndByFromAndTo(date, from, to);
 
-        String uri = "https://api.frankfurter.app/" + date + "?to=" + to + "&from=" + from;
-        String json = httpClient.get(uri);
+        if (currency != null) {
+            currencyDto = CurrencyMapper.mapCurrencyToCurrencyDto(currency);
+        } else {
+            String uri = "https://api.frankfurter.app/" + date + "?to=" + to + "&from=" + from;
+            String json = httpClient.get(uri);
 
-        Gson gson = new Gson();
-        CurrencyDto currencyDto = gson.fromJson(json, CurrencyDto.class);
+            Gson gson = new Gson();
+            currencyDto = gson.fromJson(json, CurrencyDto.class);
 
-        List<Currency> entities = CurrencyMapper.mapCurrencyDtoToEntity(currencyDto);
-        // TODO: save to database
+            List<Currency> entities = CurrencyMapper.mapCurrencyDtoToEntity(currencyDto);
+            for (Currency entity : entities) {
+                currencyDao.create(entity);
+            }
+        }
 
         return currencyDto;
     }
