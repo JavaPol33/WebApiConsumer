@@ -1,52 +1,77 @@
 import dto.CarDto;
+import dto.CurrencyDto;
+import http.HttpClient;
+import service.CurrencyService;
+import service.MathService;
+import service.ProductService;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.util.Scanner;
 
 public class Main {
 
     public static void main(String[] args) {
 
-        MathService mathService = new MathService();
-        try {
+        HttpClient httpClient = new HttpClient();
+        MathService mathService = new MathService(httpClient);
+        CurrencyService currencyService = new CurrencyService(httpClient);
 
+        System.out.println("Wybierz opcję");
+        System.out.println("1) wylosuj ciekawostkę");
+        System.out.println("2) poznaj informację o liczbie");
+        System.out.println("3) Przelicz kurs waluty");
 
-            System.out.println("Wybierz opcję");
-            System.out.println("1) wylosuj ciekawostkę");
-            System.out.println("2) poznaj informację o liczbie");
-            System.out.println("3) Prasowanie JSON - przykład");
+        Scanner scannerNumber = new Scanner(System.in);
+        Scanner scannerString = new Scanner(System.in);
 
-            Scanner scanner = new Scanner(System.in);
-            int option = scanner.nextInt();
-            String result;
+        int option = scannerNumber.nextInt();
+        String result;
 
-            switch (option) {
-                case 1:
-                     result = mathService.randomMath();
-                     break;
-                case 2:
-                    System.out.println("Podaj liczbę");
-                    int number = scanner.nextInt();
-                    result = mathService.math(number);
-                    break;
-                case 3:
-                    CarDto carDto = mathService.frankfurter();
-                    result = carDto.toString();
-                    break;
-                default:
-                    result = "Nie rozpoznano wyboru";
-            }
+        switch (option) {
+            case 1:
+                result = mathService.randomMath();
+                break;
+            case 2:
+                System.out.println("Podaj liczbę");
+                int number = scannerNumber.nextInt();
+                result = mathService.math(number);
+                break;
+            case 3:
+                System.out.println("Podaj datę (kliknij enter by wybrać bieżącą datę)");
+                String date = scannerString.nextLine();
+                if (date.equals("")) {
+                    date = "latest";
+                }
 
-            System.out.println(result);
+                String from = "";
+                while (from == "") {
+                    System.out.println("Podaj walutę bazową (PLN, EUR, USD, GBP)");
+                    from = scannerNumber.next();
 
-        } catch (CustomException e) {
-            System.out.println(e.getLocalizedMessage());
-            e.printStackTrace();
+                    if (!(from.equals("PLN") || from.equals("EUR") || from.equals("USD") || from.equals("GBP"))) {
+                        from = "";
+                    }
+                }
+
+                String to = "";
+                while (to == "") {
+                    System.out.println("Podaj walutę docelową (PLN, EUR, USD, GBP)");
+                    to = scannerNumber.next();
+
+                    if (!(to.equals("PLN") || to.equals("EUR") || to.equals("USD") || to.equals("GBP"))) {
+                        to = "";
+                    }
+                }
+
+                CurrencyDto currencyDto = currencyService.frankfurter(date, from, to);
+                result = currencyDto.toString();
+                break;
+            case 4:
+                ProductService productService = new ProductService();
+                productService.parse();
+            default:
+                result = "Nie rozpoznano wyboru";
         }
+
+        System.out.println(result);
     }
 }
