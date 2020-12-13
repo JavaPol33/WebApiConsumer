@@ -23,6 +23,13 @@ public class MathService {
     }
 
     public CarDto frankfurter() throws CustomException {
+        // 1. sprawdź, czy kusr waluty jest w db
+        // 2. jeśli tak, to zwróć
+        // Entity --> Dto --> zwrócimy
+        // 3. jeśli nie, to pobierz z web-service --> Dto
+        // 4. zapisz do db --> Dto --> map to Entity
+        // 5. zwróć Dto
+
         String uri = "https://api.frankfurter.app/latest?to=USD,EUR&from=PLN";
         String json = get(uri);
 
