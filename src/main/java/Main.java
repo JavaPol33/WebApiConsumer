@@ -1,3 +1,5 @@
+import dto.CarDto;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -33,8 +35,8 @@ public class Main {
                     result = mathService.math(number);
                     break;
                 case 3:
-                    GsonExample gsonExample = new GsonExample();
-                    result = gsonExample.parse();
+                    CarDto carDto = mathService.frankfurter();
+                    result = carDto.toString();
                     break;
                 default:
                     result = "Nie rozpoznano wyboru";

@@ -1,3 +1,8 @@
+import com.google.gson.Gson;
+import database.Car;
+import dto.CarDto;
+import mapper.CarMapper;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,9 +22,17 @@ public class MathService {
         return get(uri);
     }
 
-    public String frankfurter() throws CustomException {
+    public CarDto frankfurter() throws CustomException {
         String uri = "https://api.frankfurter.app/latest?to=USD,EUR&from=PLN";
-        return get(uri);
+        String json = get(uri);
+
+        Gson gson = new Gson();
+        CarDto car = gson.fromJson(json, CarDto.class);
+
+        Car entity = CarMapper.mapCarDtoToCar(car);
+        // TODO: save to database
+
+        return car;
     }
 
     private String get(String uri) throws CustomException {
