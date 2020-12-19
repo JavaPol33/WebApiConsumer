@@ -1,0 +1,2 @@
+id = 1 | amount = 1,00 | base = EUR | date = 2020-12-11 | rateName = PLN | rateValue = 4,44
+id = 2 | amount = 1,00 | base = USD | date = 2020-12-11 | rateName = PLN | rateValue = 3,66

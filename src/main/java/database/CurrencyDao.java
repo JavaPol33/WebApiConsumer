@@ -1,5 +1,6 @@
 package database;
 
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
@@ -11,6 +12,8 @@ import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import javax.swing.text.html.Option;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class CurrencyDao {
@@ -32,6 +35,24 @@ public class CurrencyDao {
             System.err.println("Błąd zapisu encji Currency");
             e.printStackTrace();
         }
+    }
+
+    public List<Currency> getAll() {
+        List<Currency> result = new ArrayList<>();
+
+        try (Session session = HibernateConfig.getSessionFactory().openSession()) {
+            CriteriaBuilder criteriaBuilder = session.getCriteriaBuilder();
+            CriteriaQuery<Currency> query = criteriaBuilder.createQuery(Currency.class);
+            Root<Currency> table = query.from(Currency.class);
+            query.select(table);
+            List<Currency> list = session.createQuery(query).list();
+            result.addAll(list);
+        } catch (HibernateException he) {
+            System.err.println("getAll error");
+            he.printStackTrace();
+        }
+
+        return result;
     }
 
     public Currency getById(long id) {

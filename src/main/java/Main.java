@@ -1,3 +1,4 @@
+import com.itextpdf.text.DocumentException;
 import dto.CarDto;
 import dto.CurrencyDto;
 import http.HttpClient;
@@ -5,6 +6,7 @@ import service.CurrencyService;
 import service.MathService;
 import service.ProductService;
 
+import java.io.FileNotFoundException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
@@ -21,6 +23,7 @@ public class Main {
         System.out.println("1) wylosuj ciekawostkę");
         System.out.println("2) poznaj informację o liczbie");
         System.out.println("3) Przelicz kurs waluty");
+        System.out.println("4) Zapisz waluty do pliku");
 
         Scanner scannerNumber = new Scanner(System.in);
         Scanner scannerString = new Scanner(System.in);
@@ -68,6 +71,22 @@ public class Main {
                 result = currencyDto.toString();
                 break;
             case 4:
+                currencyService.exportCurrencyToTextFile();
+                currencyService.exportCurrencyToCsvFile();
+                String excelPath = currencyService.exportCurrencyToExcelFile();
+
+                System.out.println(excelPath);
+
+                try {
+                    currencyService.exportCurrencyToPdf();
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                } catch (DocumentException e) {
+                    e.printStackTrace();
+                }
+                result = "eksport zakończony";
+                break;
+            case 5:
                 ProductService productService = new ProductService();
                 productService.parse();
             default:
